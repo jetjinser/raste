@@ -1,0 +1,8 @@
+/target
+data/
+dist/
+
+.direnv/
+
+result
+result-bin
