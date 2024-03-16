@@ -6,9 +6,13 @@
   perSystem = { pkgs, lib, ... }:
     let
       rustToolchain = config.mkRustToolchain pkgs;
+      stdenv = lib.overrideSDK pkgs.stdenv "11.0";
 
-      rustPkgs = pkgs.rustBuilder.makePackageSet {
+      rustPkgs = (pkgs.rustBuilder.makePackageSet.override {
+        inherit stdenv;
+      }) {
         inherit rustToolchain;
+
         packageFun = import ../Cargo.nix;
         packageOverrides = pkgs: pkgs.rustBuilder.overrides.all ++ [
           (pkgs.rustBuilder.rustLib.makeOverride {
